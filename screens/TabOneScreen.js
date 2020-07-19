@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components/native';
+import React from "react";
+import styled from "styled-components/native";
 
-import EditScreenInfo from '../components/EditScreenInfo';
+import EditScreenInfo from "../components/EditScreenInfo";
 
 const Container = styled.View`
   flex: 1;
@@ -22,10 +22,10 @@ const TabOneScreen = () => {
   return (
     <Container>
       <Title>Tab One</Title>
-      <Separator lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabOneScreen.js" />
+      {/* <Separator lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <EditScreenInfo path="/screens/TabOneScreen.js" /> */}
     </Container>
   );
-}
+};
 
 export default TabOneScreen;
