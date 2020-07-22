@@ -1,38 +1,43 @@
 import React, {useState, useEffect} from 'react';
 import {api} from './AxiosMaster';
 
-export const getData = (nation, isCall) => {
+export const getData = () => {
     const [numbers, setNumbers] = useState({});
     const status_patients_global = ['Confirmed','Recovered', 'Active', 'Deaths'];
 
     useEffect(async()=>{
         const fetchCovid=async()=> {
-            const {data} = await api.get(nation);
-            
+            var {data} = await api.get();
             confirm=data.reduce(function(sum, d){
-                return sum + (nation!='indonesia' ? d.attributes.Confirmed : parseInt(d.positif.replace(',','')))
-                // return sum + parseInt(d.positif.replace(',',''))
+                return sum + d.attributes.Confirmed
             },0)
             recovered=data.reduce(function(sum, d){
-                return sum + (nation!='indonesia' ? d.attributes.Recovered : parseInt(d.sembuh.replace(',','')))
-                // return sum + parseInt(d.sembuh.replace(',',''))
+                return sum + d.attributes.Recovered
             },0)
             active=data.reduce(function(sum, d){ 
-                return sum + ( nation!='indonesia' ? d.attributes.Active : parseInt(d.dirawat.replace(',','')))
-                // return sum + parseInt(d.dirawat.replace(',',''))
+                return sum + d.attributes.Active
             },0)
             death=data.reduce(function(sum, d){ 
-                return sum + (nation!='indonesia' ? d.attributes.Deaths : parseInt(d.meninggal.replace(',','')))
-                // return sum + parseInt(d.meninggal.replace(',',''))
+                return sum + d.attributes.Deaths
             },0)
-            // status_patients_global.map( status => {
-            //     data.reduce(function(sum, d){
-            //         return sum+d.attributes[status]
-            //     })
-            // })
+            total_glob={confirm:confirm,recovered:recovered,active:active,death:death}
 
-            total={confirm:confirm,recovered:recovered,active:active,death:death}
-        
+            var {data} = await api.get('indonesia');
+            confirm=data.reduce(function(sum, d){
+                return sum + parseInt(d.positif.replace(',',''))
+            },0)
+            recovered=data.reduce(function(sum, d){
+                return sum + parseInt(d.sembuh.replace(',',''))
+            },0)
+            active=data.reduce(function(sum, d){ 
+                return sum + parseInt(d.dirawat.replace(',',''))
+            },0)
+            death=data.reduce(function(sum, d){ 
+                return sum + parseInt(d.meninggal.replace(',',''))
+            },0)
+            total_idn={confirm:confirm,recovered:recovered,active:active,death:death}
+            total={indonesia:total_idn, global:total_glob}
+            console.log(total.indonesia.active)
             setNumbers(total);
         };
         fetchCovid();
